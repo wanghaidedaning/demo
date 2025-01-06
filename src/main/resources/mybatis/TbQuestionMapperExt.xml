@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.TbQuestionMapper">
+    <select id="queryQuestion" resultType="com.example.demo.model.vo.QuestionVo">
+        select tq.*, ted.html, ted.raw
+        from tb_question tq
+                 left join tb_editor_data ted on tq.question = ted.id
+        where title like concat('%', #{title}, '%')
+          and tq.delete_flag = 0
+    </select>
+</mapper>

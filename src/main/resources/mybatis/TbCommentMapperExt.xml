@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.mapper.TbCommentMapper" >
+
+  <select id="queryCommentList" resultType="com.example.demo.model.vo.CommentDetailVo">
+    select
+      tc.id,
+      ted.html as comment,
+      tc.question_id,
+      tc.reply_id,
+      tc.create_time,
+      tc.create_user,
+      (select count(1) from tb_user_liked_comment where comment_id =tc.comment) as likedCount,
+      (select count(1) from tb_user_collected_comment where comment_id =tc.comment) as collectedCount,
+      (select count(1) from tb_comment  where id =tc.comment) as collectedCount,
+      if((select count(1) from tb_user_liked_comment where username =tc.create_user)>0,'true','fasle') as likedFlag,
+      if((select count(1) from tb_user_liked_comment where username =tc.create_user)>0,'true','fasle') as collectedFlag
+    from tb_comment tc left join tb_editor_data ted on tc.comment = ted.id  where question_id  =#{questionId}
+  </select>
+</mapper>
